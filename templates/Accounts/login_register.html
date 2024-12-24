@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="site-banner jarallax padding-large"
+style="background: url({% static "images/hero-image.jpg" %}) no-repeat; background-position: top;">
+<div class="container">
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-title">Login</h1>
+    <div class="breadcrumbs">
+      <span class="item">
+        <a href="index.html">Home /</a>
+      </span>
+      <span class="item">Login</span>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="login-tabs padding-large no-padding-bottom">
+<div class="container">
+<div class="row">
+  <div class="tabs-listing">
+    <nav>
+      <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-sign-in-tab" data-bs-toggle="tab" data-bs-target="#nav-sign-in"
+          type="button" role="tab" aria-controls="nav-sign-in" aria-selected="true">Sign In</button>
+        <button class="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#nav-register"
+          type="button" role="tab" aria-controls="nav-register" aria-selected="false">Register</button>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      
+      <div class="tab-pane fade active" id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
+        <form method="POST">
+          {% csrf_token %}
+          {{ login_form }}
+          {% if error_message %}
+          <div class="alert alert-danger">
+              <p>{{ error_message }}</p>
+          </div>
+          {% endif %}
+          {% if login_form.errors %}
+            <div class="alert alert-danger">
+              {% for error in login_form.errors.values %}
+                {% for message in error %}
+                  <p>{{ message }}</p>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <label>
+            <span class="label-body"><a href="{% url "core:password_reset" %}">Forgot Password</a></span>
+          </label>
+          <button type="submit" name="login" class="btn btn-dark btn-full btn-medium">Login</button>
+        </form>
+      </div>
+      <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
+        <form method="POST">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+      
+          <div class="form-group">
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" id="id_username" placeholder="Your Username"
+              class="u-full-width bg-light">
+            {% if form.username.errors %}
+              <div class="error text-danger">
+                {% for error in form.username.errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+      
+          <div class="form-group">
+            <label for="id_email">Your email address:</label>
+            <input type="text" name="email" id="id_email" placeholder="Your Email Address"
+              class="u-full-width bg-light">
+            {% if form.email.errors %}
+              <div class="error text-danger">
+                {% for error in form.email.errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+      
+          <div class="form-group">
+            <label for="id_password1">Password:</label>
+            <input type="password" name="password1" id="id_password1" placeholder="Your Password" 
+              class="u-full-width bg-light">
+            {% if form.password1.errors %}
+              <div class="error text-danger">
+                {% for error in form.password1.errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+      
+          <div class="form-group">
+            <label for="id_password2">Password confirmation:</label>
+            <input type="password" name="password2" id="id_password2" placeholder="Password Confirmation" 
+              class="u-full-width bg-light">
+            {% if form.password2.errors %}
+              <div class="error text-danger">
+                {% for error in form.password2.errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+      
+          <button type="submit" name="register" class="btn btn-dark btn-full btn-medium">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+{% endblock %}

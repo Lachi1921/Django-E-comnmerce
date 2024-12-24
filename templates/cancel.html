@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="payment-failed" class="padding-large bg-light-grey">
+  <div class="container">
+    <div class="justify-content-center">
+      <div class="page-header text-center">
+        <div class="section-header">
+          <h1 class="page-title text-danger">Payment Failed!</h1>
+          <p class="lead">We’re sorry, but your payment was not successful. Something went wrong! Please try again.</p>
+        </div>
+        <div class="mt-5">
+          <a href="{% url 'core:view-cart' %}" class="btn btn-dark btn-medium">Retry Payment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

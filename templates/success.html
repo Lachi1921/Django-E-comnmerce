@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="payment-success" class="padding-large bg-light-grey">
+  <div class="container">
+    <div class="justify-content-center">
+      <div class="page-header text-center">
+        <div class="section-header">
+          <h1 class="page-title text-success">Payment Successful!</h1>
+          <p class="lead">Thank you for your purchase. Your order has been placed successfully.</p>
+        </div>
+        <div class="mt-5">
+          <a href="{% url "core:products" %}" class="btn btn-dark btn-medium">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<section class="site-banner padding-small bg-light-grey">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="breadcrumbs">
+          <span class="item">
+            <a href="{% url "core:home" %}">Home /</a>
+          </span>
+          <span class="item">
+            <a href="{% url "core:products" %}">Shop /</a>
+          </span>
+          <span class="item">Cart</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shopify-cart padding-large">
+  <div class="container">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="cart-table">
+          <div class="cart-header border-bottom">
+              <div class="row d-flex">
+                  <h3 class="cart-title col-lg-3">Product</h3>
+                  <h3 class="cart-title col-lg-3">Quantity</h3>
+                  <h3 class="cart-title col-lg-3">Subtotal</h3>
+                  <h3 class="cart-title col-lg-3">Checkout</h3>
+              </div>
+          </div>
+          {% for item in cart_items %}
+          <div class="cart-item border-bottom padding-small">
+              <div class="row">
+                  <div class="col-lg-4 col-md-3">
+                      <div class="row cart-info d-flex flex-wrap">
+                          <div class="col-lg-5">
+                              <div class="card-image">
+                                  <img src="{{ item.product.image_set.all.0.images.url }}" alt="cloth" class="img-fluid">
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div class="card-detail">
+                                  <h3 class="card-title">
+                                      <a href="{% url "core:product-details" item.product.slug %}">{{ item.product.title|slice:":30" }}...</a>
+                                  </h3>
+                                  <div class="card-price">
+                                      <span class="money text-primary">${{ item.product.price }}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-md-7">
+                      <div class="row d-flex">
+                          <div class="col-md-6">
+                              <div class="qty-number d-flex align-items-center justify-content-start">
+                                  <input type="hidden" name="item_id" value="{{ item.id }}">
+                                  <button type="button" class="decrement-button">-</button>
+                                  <input type="number" name="quantity[{{ item.id }}]" class="spin-number-output" id="quantity" value="{{ item.quantity }}" style="width: 55%;" min="1" max="100">
+                                  <button type="button" class="increment-button">+</button>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="total-price">
+                                  <span class="money text-primary">${{ item.calculate_item_price }}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-1 col-md-2">
+                    <div class="cart-checkout">
+                        <button><a href="{% url "core:checkout" item_id=item.id %}" style="color: #fff">Checkout</a></button>
+                    </div>
+                  </div>
+                  <div class="col-lg-1 col-md-2">
+                      <div class="cart-remove">
+                          <button type="submit" name="remove-cart" value="{{ item.id }}"><i class="icon icon-close"></i></button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% empty %}
+            No items in your cart
+          {% endfor %}
+      </div>
+    <div class="cart-totals">
+      <h2 class="section-title">Cart Totals</h2>
+      <div class="total-price">
+        <table cellspacing="0" class="table">
+          <tbody>
+            <tr class="order-total">
+              <th>Total</th>
+              <td data-title="Total">
+                <span class="price-amount amount text-primary">
+                  <bdi>
+                    <span class="price-currency-symbol">$</span>{{ total_price }}</bdi>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="button-wrap">
+        <button type="submit" name="update-cart" class="btn btn-dark btn-medium">Update Cart</button>
+        <a href="{% url "core:products" %}"><button class="btn btn-dark btn-medium">Continue Shopping</button></a>
+      </div>
+    </div>
+  </form>
+  </div>
+</section>
+{% endblock content %}

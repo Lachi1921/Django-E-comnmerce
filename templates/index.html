@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <section id="billboard" class="overflow-hidden">
+
+    <button class="button-prev">
+      <i class="icon icon-chevron-left"></i>
+    </button>
+    <button class="button-next">
+      <i class="icon icon-chevron-right"></i>
+    </button>
+    <div class="swiper main-swiper">
+      <div class="swiper-wrapper">
+        {% for slide in slides %}
+        <div class="swiper-slide"
+          style="background-image: url('{{ slide.background_image.url }}');background-repeat: no-repeat;background-size: cover;background-position: center;">
+          <div class="banner-content">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <h2 class="banner-title">{{ slide.banner_title }}</h2>
+                  <p>{{ slide.brief_description }}</p>
+                  <div class="btn-wrap">
+                    <a href="{% url "core:products" %}" class="btn btn-light btn-medium d-flex align-items-center" tabindex="0">{{ slide.button_text }}<i class="icon icon-arrow-io"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section id="featured-products" class="product-store padding-large">
+    <div class="container">
+      <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="btn-wrap">
+          <a href="{% url "core:products" %}" class="d-flex align-items-center">View all products <i
+              class="icon icon icon-arrow-io"></i></a>
+        </div>
+      </div>
+      <div class="swiper product-swiper overflow-hidden">
+        <div class="swiper-wrapper">
+          {% for product in products|slice:":7" %}
+            <div class="swiper-slide">
+              <div class="product-item">
+                <div class="image-holder">
+                  <img src="{{ product.image_set.all.0.images.url }}" class="product-image">
+                </div>
+                <div class="cart-concern">
+                  <div class="cart-button d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn-wrap cart-link d-flex align-items-center"><a href="{% url "core:add-to-cart" product_slug=product.slug %}">Add to cart <i class="icon icon-arrow-io"></i></a>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-detail">
+                  <h3 class="product-title">
+                    <a href="{% url "core:product-details" product_slug=product.slug %}">{{ product.title|slice:":20" }}...</a>
+                  </h3>
+                  <span class="item-price text-primary">${{ product.price }}</span>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <section id="latest-collection">
+    <div class="container">
+      <div class="product-collection row">
+        <div class="col-lg-7 col-md-12 left-content">
+          <div class="collection-item">
+            <div class="products-thumb">
+              <img src="{% static "images/collection-item1.jpg" %}" alt="collection item" class="large-image image-rounded">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 product-entry">
+              <div class="categories">casual collection</div>
+              <h3 class="item-title">street wear.</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.</p>
+              <div class="btn-wrap">
+                <a href="{% url "core:products" %}" class="d-flex align-items-center">shop collection <i class="icon icon-arrow-io"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-12 right-content flex-wrap">
+          <div class="collection-item top-item">
+            <div class="products-thumb">
+              <img src="{% static "images/collection-item2.jpg" %}" alt="collection item" class="small-image image-rounded">
+            </div>
+            <div class="col-md-6 product-entry">
+              <div class="categories">Basic Collection</div>
+              <h3 class="item-title">Basic shoes.</h3>
+              <div class="btn-wrap">
+                <a href="{% url "core:products" %}" class="d-flex align-items-center">shop collection <i class="icon icon-arrow-io"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="collection-item bottom-item">
+            <div class="products-thumb">
+              <img src="{% static "images/collection-item3.jpg" %}" alt="collection item" class="small-image image-rounded">
+            </div>
+            <div class="col-md-6 product-entry">
+              <div class="categories">Best Selling Product</div>
+              <h3 class="item-title">woolen hat.</h3>
+              <div class="btn-wrap">
+                <a href="{% url "core:products" %}" class="d-flex align-items-center">shop collection <i class="icon icon-arrow-io"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="selling-products" class="product-store bg-light-grey padding-large">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Best selling products</h2>
+      </div>
+      <ul class="tabs list-unstyled">
+        <li data-tab-target="#all" class="active tab">All</li>
+        {% for category in categories %}
+        <li data-tab-target="#{{ category.name }}" class="tab">{{ category.name }}</li>
+        {% endfor %}
+      </ul>
+      <div class="tab-content">
+        <div id="all" data-tab-content class="active">
+          <div class="row d-flex flex-wrap">
+            {% for product in products|slice:":12" %}
+            <div class="product-item col-lg-3 col-md-6 col-sm-6">
+              <div class="image-holder">
+                <img src="{{ product.image_set.all.0.images.url }}" alt="Books" class="product-image">
+              </div>
+              <div class="cart-concern">
+                <div class="cart-button d-flex justify-content-between align-items-center">
+                  <button type="button" class="btn-wrap cart-link d-flex align-items-center"><a href="{% url "core:add-to-cart" product_slug=product.slug %}">Add to cart <i class="icon icon-arrow-io"></i></a>
+                  </button>
+                </div>
+              </div>
+              <div class="product-detail">
+                <h3 class="product-title">
+                  <a href="{% url "core:product-details" product_slug=product.slug %}">{{ product.title|slice:":20" }}...</a>
+                </h3>
+                <div class="item-price text-primary">${{ product.price }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% for category in categories %}
+        <div id="{{ category.name }}" data-tab-content>
+          <div class="row d-flex flex-wrap">
+            {% for product in category.product_set.all %}
+              <div class="product-item col-lg-3 col-md-6 col-sm-6">
+                <div class="image-holder">
+                  <img src="{{ product.image_set.all.0.images.url }}" alt="Books" class="product-image">
+                </div>
+                <div class="cart-concern">
+                  <div class="cart-button d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn-wrap cart-link d-flex align-items-center"><a href="{% url "core:add-to-cart" product_slug=product.slug %}">Add to cart <i class="icon icon-arrow-io"></i></a>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-detail">
+                  <h3 class="product-title">
+                    <a href="{% url "core:product-details" product_slug=product.slug %}">{{ product.title|slice:":20" }}... }}</a>
+                  </h3>
+                  <div class="item-price text-primary">${{ product.price }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {% if reviews %}
+    <section id="testimonials" class="padding-large no-padding-bottom">
+      <div class="container">
+        <div class="reviews-content">
+          <div class="row d-flex flex-wrap">
+            <div class="col-md-2">
+              <div class="review-icon">
+                <i class="icon icon-right-quote"></i>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="swiper testimonial-swiper overflow-hidden">
+                <div class="swiper-wrapper">
+                  {% for review in reviews %}
+                  <div class="swiper-slide">
+                    <div class="testimonial-detail">
+                      <p>{{ review.content }}</p>
+                      <div class="author-detail">
+                        <div class="name">By {{ review.user.user.username|title }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="swiper-arrows">
+                <button class="prev-button">
+                  <i class="icon icon-arrow-left"></i>
+                </button>
+                <button class="next-button">
+                  <i class="icon icon-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+  
+  <section class="shoppify-section-banner">
+    <div class="container">
+      <div class="product-collection">
+        <div class="left-content collection-item">
+          <div class="products-thumb">
+            <img src="{% static "images/model.jpg" %}" alt="collection item" class="large-image image-rounded">
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 product-entry">
+            <div class="categories">Denim collection</div>
+            <h3 class="item-title">The casual selection.</h3>
+            <p>Vel non viverra ligula odio ornare turpis mauris. Odio aliquam, tincidunt ut vitae elit risus. Tempor
+              egestas condimentum et ac rutrum dui, odio.</p>
+            <div class="btn-wrap">
+              <a href="{% url "core:products" %}" class="d-flex align-items-center">shop collection <i class="icon icon-arrow-io"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quotation" class="align-center padding-large">
+    <div class="inner-content">
+      <h2 class="section-title divider">Quote of the day</h2>
+      <blockquote>
+        <q>It's true, I don't like the whole cutoff-shorts-and-T-shirt look, but I think you can look fantastic in
+          casual clothes.</q>
+        <div class="author-name">- Dr. Seuss</div>
+      </blockquote>
+    </div>
+  </section>
+{% endblock content %}

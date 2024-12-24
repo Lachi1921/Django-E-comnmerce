@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="search-results py-5">
+  <div class="container">
+    {% if query %}
+      <h2 class="mb-4">Results for: <span class="text-primary">{{ query }}</span></h2>
+      {% if results %}
+        <div class="row">
+          {% for result in results %}
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <img src="{{ result.image_set.all.0.images.url }}" class="card-img-top" alt="{{ result.title }}">
+                <div class="card-body">
+                  <h5 class="card-title">{{ result.title }}</h5>
+                  <p class="card-text">${{ result.price }}</p>
+                  <a href="{% url 'core:product-details' result.slug %}" class="btn btn-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No results found for your search. Try a different keyword.</p>
+      {% endif %}
+    {% else %}
+      <p class="text-muted">Enter a search term to see results.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

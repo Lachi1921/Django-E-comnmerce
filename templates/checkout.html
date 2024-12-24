@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+  <section class="site-banner padding-small bg-light-grey">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="breadcrumbs">
+            <span class="item">
+              <a href="index.html">Home /</a>
+            </span>
+            <span class="item">
+              <a href="shop.html">Shop /</a>
+            </span>
+            <span class="item">Checkout</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shopify-cart checkout-wrap padding-large">
+    <div class="container">
+      <form method="POST" class="form-group">
+        {% csrf_token %}
+        <div class="row d-flex flex-wrap">
+          <div class="col-lg-6">
+            <h2 class="section-title">Billing Details</h2>
+            <div class="billing-details">
+              <div id="billing-address">
+                <!-- Street Address -->
+                <label for="id_street_address">Street address:</label>
+                <input type="text" id="id_street_address" name="street_address" class="form-control" value="{{ billing_address_instance.street_address }}">
+                {% if form.street_address.errors %}
+                    {% for error in form.street_address.errors %}
+                        <div class="error text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            
+                <!-- Apartment Address -->
+                <label for="id_apartment_address">Apartment address:</label>
+                <input type="text" id="id_apartment_address" name="apartment_address" class="form-control" value="{{ billing_address_instance.apartment_address }}">
+                {% if form.apartment_address.errors %}
+                    {% for error in form.apartment_address.errors %}
+                        <div class="error text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            
+                <!-- Zip Code -->
+                <label for="id_zip_code">Zip code:</label>
+                <input type="text" id="id_zip_code" name="zip_code" class="form-control" value="{{ billing_address_instance.zip_code }}">
+                {% if form.zip_code.errors %}
+                    {% for error in form.zip_code.errors %}
+                        <div class="error text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            
+                <!-- Country -->
+                <label for="id_country">Country / Region*:</label>
+                {{ form.country }}
+                {% if form.country.errors %}
+                    {% for error in form.country.errors %}
+                        <div class="error text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            
+              {% if has_existing_billing_address %}
+                <label class="list-group-item d-flex">
+                  <input class="form-check-input flex-shrink-0" type="checkbox" name="use_default_billing_address" id="id_use_default_billing_address">
+                  <div>
+                    <strong>Use Default Billing Address?</strong>
+                  </div>
+                </label>
+              {% endif %}
+              <div class="billing-details">
+                <label for="id_order_notes">Order notes (optional)</label>
+                <textarea id="id_order_notes" name="order_notes" class="form-control" placeholder="Notes about your order. Like special notes for delivery."></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="your-order">
+              <h2 class="section-title">Cart Totals</h2>
+              <div class="total-price">
+                <table cellspacing="0" class="table">
+                  <tbody>
+                    <tr class="order-total">
+                      <th>Total</th>
+                      <td data-title="Total">
+                        <span class="price-amount amount text-primary">
+                          <bdi>
+                            <span class="price-currency-symbol">$</span>{{ total_price }}</bdi>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="list-group mt-5 mb-2">
+                  <label class="list-group-item d-flex">
+                    <input class="form-check-input flex-shrink-0" type="radio" value="Stripe" name="payment_method" id="id_payment_method_0">
+                    <div>
+                      <strong>Stripe</strong>
+                    </div>
+                  </label>
+                  {% if form.payment_method.errors %}
+                      {% for error in form.payment_method.errors %}
+                          <div class="error text-danger mb-2">{{ error }}</div>
+                      {% endfor %}
+                  {% endif %}
+                  
+                </div>
+                <button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Place an order</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    const checkbox = document.getElementById('id_use_default_billing_address');
+    const billingAddressContainer = document.getElementById('billing-address');
+    let savedBillingAddress = null;
+
+    const handleCheckboxChange = () => {
+      if (checkbox.checked) {
+        if (!savedBillingAddress) {
+          savedBillingAddress = billingAddressContainer.innerHTML;
+        }
+        billingAddressContainer.innerHTML = '';
+      } else {
+        if (savedBillingAddress) {
+          billingAddressContainer.innerHTML = savedBillingAddress;
+        }
+      }
+    };
+
+    checkbox.addEventListener('change', handleCheckboxChange);
+
+  });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="product-list" class="padding-large bg-light-grey">
+  <div class="container">
+    <div class="page-header text-center">
+      <div class="section-header">
+        <h1 class="page-title">Your Products</h1>
+        <p class="lead">Manage the products you have created.</p>
+      </div>
+    </div>
+
+    <div class="product-store">
+        <div class="container">
+            {% for product in products %}
+            <div class="row product-item">
+                <div class="image-holder col-md-3">
+                    <img src="{{ product.image_set.all.0.images.url }}" alt="Books" class="product-image no-margin-bottom">
+                </div>
+                <div class="product-detail col-md-6">
+                    <h3 class="product-title">
+                      <a href="single-product.html">{{ product.title|title }}</a>
+                    </h3>
+                    <p>{{ product.description|slice:":100" }}</p>
+                    <div class="item-price text-primary">${{ product.price }}</div>
+                  </div>
+                  <div class="action-buttons col-md-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        <a href="{% url 'core:edit-product' product.slug %}" style="color: white;"><button class="btn btn-danger btn-small" style="margin: 0 10px;">Edit</a>
+
+                        <button type="submit" name="delete_product" value="{{ product.id }}" class="btn btn-danger btn-small" style="margin: 0 10px;">Delete</button>
+                    </form>
+                  </div>
+            </div>
+            {% empty %}
+                <p>You have not created any products yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

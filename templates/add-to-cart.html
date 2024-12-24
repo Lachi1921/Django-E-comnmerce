@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<style>
+    .cart-wrap .form-group input.form-control, .cart-wrap .form-group select, .cart-wrap .form-group textarea {
+        width: 100%
+    }
+</style>
+
+  <section class="site-banner padding-small bg-light-grey">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="breadcrumbs">
+            <span class="item">
+              <a href="{% url "core:home" %}">Home /</a>
+            </span>
+            <span class="item">Add to cart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="shopify-cart cart-wrap padding-large">
+    <div class="container">
+        <h2 class="section-title">Add to cart</h2>
+        <form method="POST" class="form-group">
+            {% csrf_token %}
+            <div class="row d-flex flex-wrap">
+                <div class="col-lg-6">
+                    <div class="billing-details">
+                        {% for field in cart_item_form %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="error">{{ error }}</div>
+                            {% endfor %}
+                        {% endfor %}
+                        <button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Add to cart</button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                <div class="col-lg-4">
+                    
+                </div>
+                <div class="product-item col-lg-8">
+                    <div class="image-holder">
+                        <img src="{{ product.image_set.all.0.images.url }}" class="product-image">
+                    </div>
+                    <div class="product-detail">
+                        <h3 class="product-title">
+                        <a href="{% url "core:product-details" product_slug=product.slug %}">{{ product.title|title }}</a>
+                        </h3>
+                        <div class="item-price text-primary">${{ product.price }}</div>
+                    </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</section>
+
+{% endblock content %}
