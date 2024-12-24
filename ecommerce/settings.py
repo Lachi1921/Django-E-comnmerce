@@ -138,7 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 from django.core.mail.backends import console
 
-DEFAULT_FROM_EMAIL = 'kioshi5581@gmail.com'
+DEFAULT_FROM_EMAIL = '##########'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -150,8 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-STRIPE_PUBLISHABLE_KEY = "pk_test_51KCcOzDVAsZHDBXLwGMWDqTZ35dkUq4Yuu01te8676X9UXUArNN4PinRKXeRLTpED9ZQgnGUduAwdi8bhiWYNenz00S8jA1Akn"
-STRIPE_SECRET_KEY = "sk_test_51KCcOzDVAsZHDBXLylA1MMnIRSGimqcHz5H4UHix4gp1LavCFdDfVYoEqPv0q205pGQWHuulE4tSSahNXYXVhQWV00n6wFqJR6"
-STRIPE_WEBHOOK_SECRET = "whsec_51862af21b9750fc96326363db5e1fb0da34fda49444c65aff06ddef4244796c"
+STRIPE_PUBLISHABLE_KEY = "#####"
+STRIPE_SECRET_KEY = "#######"
+STRIPE_WEBHOOK_SECRET = "#####"
 
 
